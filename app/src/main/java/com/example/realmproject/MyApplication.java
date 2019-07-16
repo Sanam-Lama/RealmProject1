@@ -29,7 +29,9 @@ public class MyApplication extends Application {
 }
 
 
-/* This section needs to go in MainActivity. In this case the images has already been stored to realm database
+/* This section needs to go in MainActivity. This step is done when the drawables are called providing the path
+ * or the id of each drawable item. This writes the drawables one by one to the realm database.
+ * In this case the images has already been stored to realm database
  * that is why we do not have to write everytime.Once the data is stored in the realm database, we just call
  * read method to retrieve the data. */
 //        writeImages(R.drawable.ic_ac_unit_black_24dp);

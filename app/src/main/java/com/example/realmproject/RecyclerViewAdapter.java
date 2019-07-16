@@ -1,5 +1,7 @@
 package com.example.realmproject;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -48,9 +50,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         // this will allow the images to recycle to beginning index and prevent app from crashing when it reaches the last image
         Image image = results.get((position + startIndex) % results.size());
 
+        // storing each data coming from database to dataArray which is later converted to bitmap in the following line
+        byte[] dataArray = image.getData();
+
+        // converting byteArray to bitmap
+        Bitmap bitmap = BitmapFactory.decodeByteArray(dataArray, 0, dataArray.length);
+
         viewHolder.image_view.setMinimumWidth(width/size);
         viewHolder.image_view.setMinimumHeight(height/size);
-        viewHolder.image_view.setImageResource(image.getImage());
+//        viewHolder.image_view.setImageResource(image.getId());
+
+        viewHolder.image_view.setImageBitmap(bitmap);
     }
 
     @Override
@@ -79,7 +89,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
                 results = realm.where(Image.class).findAll();
 
-//                Log.e("results size", Integer.toString(results.size()));
+                Log.e("results size", Integer.toString(results.size()));
 
 //                for (Image image : results) {
 //                    image_view.setImageResource(image.getImage());
