@@ -29,6 +29,7 @@ package com.example.realmproject;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -44,6 +45,8 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -55,6 +58,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -79,6 +83,11 @@ public class MainActivity extends AppCompatActivity {
     Realm realm;
     ImageView image_view;
     Button button1, button2, button3;
+    FrameLayout frameLayout;
+    FragmentManager fragmentManager;
+    FirstFragment fragment;
+    FragmentTransaction fragmentTransaction;
+//    Fragment f;
 
     Image image;
     Integer startIndex = 0;
@@ -87,11 +96,6 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Integer> drawables = new ArrayList<>();
 
     private static Bitmap bitmap;
-
-
-    RecyclerView recycler_view;
-    RecyclerViewAdapter adapter;
-    RecyclerView.LayoutManager layoutManager;
 
     @SuppressLint("WrongThread")
     @Override
@@ -108,48 +112,68 @@ public class MainActivity extends AppCompatActivity {
 //        prepareList();
 //        writeImages();
 
+        frameLayout = (FrameLayout)findViewById(R.id.frameLayout);
+
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-//                button1.setVisibility(View.GONE);
-//                button2.setVisibility(View.GONE);
-//                button3.setVisibility(View.GONE);
+                button1.setVisibility(View.INVISIBLE);
+                button2.setVisibility(View.INVISIBLE);
+                button3.setVisibility(View.INVISIBLE);
 
-                Intent intent = new Intent(MainActivity.this, TestActivity.class);
-//                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                intent.putExtra("size", 3);
-                intent.putExtra("startingIndex", startIndex);
+                fragment = FirstFragment.newInstance(3, startIndex);
+//                Bundle bundle = new Bundle();
+//                bundle.putInt("SIZE",2);
+//                fragment.setArguments(bundle);
+                fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.add(R.id.frameLayout, fragment);
+                fragmentTransaction.commit();
                 startIndex = startIndex + 9;
-                startActivity(intent);
-
-//                Toast.makeText(MainActivity.this, "Button 1 is clicked", Toast.LENGTH_SHORT).show();
             }
         });
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, TestActivity.class);
-//                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                intent.putExtra("size", 4);
-                intent.putExtra("startingIndex", startIndex);
-                startIndex = startIndex + 16;
-                startActivity(intent);
+
+                button1.setVisibility(View.INVISIBLE);
+                button2.setVisibility(View.INVISIBLE);
+                button3.setVisibility(View.INVISIBLE);
+
+                fragment = FirstFragment.newInstance(4, startIndex);
+                fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.add(R.id.frameLayout, fragment);
+                fragmentTransaction.commit();
+                startIndex += 16;
             }
         });
 
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, TestActivity.class);
-//                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                intent.putExtra("size", 7);
-                intent.putExtra("startingIndex", startIndex);
-                startIndex = startIndex + 49;
-                startActivity(intent);
+
+                button1.setVisibility(View.INVISIBLE);
+                button2.setVisibility(View.INVISIBLE);
+                button3.setVisibility(View.INVISIBLE);
+
+                fragment = FirstFragment.newInstance(7, startIndex);
+                fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.add(R.id.frameLayout, fragment);
+                fragmentTransaction.commit();
+                startIndex += 49;
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        Log.e("back pressed", "here");
+       frameLayout.removeAllViews();
+       button1.setVisibility(View.VISIBLE);
+       button2.setVisibility(View.VISIBLE);
+       button3.setVisibility(View.VISIBLE);
 
     }
 
